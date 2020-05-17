@@ -27,27 +27,46 @@ def create_files(project):
             pass
     return file_list
 
+def choose_type(project, type_):
+    if x == :
+        return tree
+    elif x == 
+        return tree
+    elif x ==xx
+        return tree
+
+
 def create_directories_for_single_package(project):
-    directories = [project, 'tests']
+    tree = {f'{project}': ['__init__.py', f'{project}.py', 'helpers.py',],
+            'tests': [f'{project}_tests.py', 'helpers_tests.py',],
+            'root': ['.gitignore', 'LICENSE', 'README.md', 'requirements.txt', 'setup.py',],
+            }
+    directories = [key for key in tree.keys()]
     for directory in directories:
-        os.mkdir(directory)
-    return directories
+        if directory == 'root':
+            pass
+        else:
+            try:
+                os.mkdir(directory)
+            except OSError:
+                return False
+    return True
 
 def create_files_for_single_package(project):
-    path = os.getcwd()
-    app_files = ['__init__.py', f'{project}.py', 'helpers.py',]
-    test_files = [f'{project}_tests.py', 'helpers_tests.py',]
-    files_ = ['.gitignore', 'LICENSE', 'README.md', 'requirements.txt', 'setup.py',]
-    for file_ in app_files:
-        with open(f'{project}/{file_}', 'w') as fp:
-            pass
-    for file_ in test_files:
-        with open(f'tests/{file_}', 'w') as fp:
-            pass
-    for file_ in files_:
-        with open(file_, 'w') as fp:
-            pass
-    return app_files, test_files, files_
+    tree = {f'{project}': ['__init__.py', f'{project}.py', 'helpers.py',],
+            'tests': [f'{project}_tests.py', 'helpers_tests.py',],
+            'root': ['.gitignore', 'LICENSE', 'README.md', 'requirements.txt', 'setup.py',],
+            }
+    for directory, files in tree.items():
+        for file_ in files:
+            if directory == 'root':
+                with open(file_, 'w') as fp:
+                    pass
+            else:
+                with open(f'{directory}/{file_}', 'w') as fp:
+                    pass
+
+    return True
 
 
 

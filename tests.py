@@ -25,17 +25,21 @@ def test_can_create_files_for_one_off(project):
     assert len(app.create_files(project)) == len(os.listdir())
 
 def test_can_create_directories_for_single_package(project):
-    assert len(app.create_directories_for_single_package(project)) == len(os.listdir())
+    create_dir = app.create_directories_for_single_package('app')
+    directories = [d for d in os.listdir() if os.path.isdir(d)]
+    assert create_dir == True
+    assert directories == ['app', 'tests']
 
 def test_can_create_files_for_single_package(project):
     path = os.getcwd()
     app.create_directories_for_single_package(project)
-    app_files, test_files, files_ = app.create_files_for_single_package(project)
+    create_files = app.create_files_for_single_package(project)
+    assert create_files == True
     os.chdir(project)
-    assert len(app_files) == len(os.listdir())
+    assert len(os.listdir()) == 3
     os.chdir(f'{path}/tests')
-    assert len(test_files) == len(os.listdir())
+    assert len(os.listdir()) == 2
     os.chdir(path)
     current_files = [f for f in os.listdir() if os.path.isfile(f)]
-    assert len(files_) == len(current_files)
+    assert len(current_files) == 5
 
