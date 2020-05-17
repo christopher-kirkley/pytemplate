@@ -22,18 +22,25 @@ def test_can_create_project_directory():
     shutil.rmtree(project)
 
 def test_can_create_files_for_one_off(project):
-    assert len(app.create_files(project)) == len(os.listdir())
+    tree = app.create_tree('app', 'oneoff')
+    create_dir = app.create_directories('app', tree)
+    create_files = app.create_files(project, tree)
+    assert create_files == True
+    current_files = [f for f in os.listdir() if os.path.isfile(f)]
+    assert len(current_files) == 7
 
-def test_can_create_directories_for_single_package(project):
-    create_dir = app.create_directories_for_single_package('app')
+def test_can_create_directories_for_single(project):
+    tree = app.create_tree('app', 'single')
+    create_dir = app.create_directories('app', tree)
     directories = [d for d in os.listdir() if os.path.isdir(d)]
     assert create_dir == True
     assert directories == ['app', 'tests']
 
-def test_can_create_files_for_single_package(project):
+def test_can_create_files_for_single(project):
     path = os.getcwd()
-    app.create_directories_for_single_package(project)
-    create_files = app.create_files_for_single_package(project)
+    tree = app.create_tree('app', 'single')
+    app.create_directories(project, tree)
+    create_files = app.create_files(project, tree)
     assert create_files == True
     os.chdir(project)
     assert len(os.listdir()) == 3
@@ -42,4 +49,12 @@ def test_can_create_files_for_single_package(project):
     os.chdir(path)
     current_files = [f for f in os.listdir() if os.path.isfile(f)]
     assert len(current_files) == 5
+
+def test_can_create_tree():
+    tree = app.create_tree('app', 'single')
+    assert len(tree) == 3
+    tree = app.create_tree('app', 'oneoff')
+    assert len(tree) == 1
+    
+    
 

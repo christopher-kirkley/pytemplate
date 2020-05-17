@@ -15,32 +15,22 @@ def create_project_directory(project):
         return False
     return None
 
-def create_files(project):
-    """Make files.
-    Files are empty, but this could create custom files."""
 
-    file_list = [f'{project}.py', '.gitignore', 'LICENSE', 'README.md', 'requirements.txt',
-                'setup.py', 'tests.py',
-                ]
-    for file_ in file_list:
-        with open(file_, 'w') as fp:
-            pass
-    return file_list
-
-def choose_type(project, type_):
-    if x == :
+def create_tree(project, type_):
+    if type_ == 'oneoff':
+        tree = {'root': [f'{project}.py', '.gitignore', 'LICENSE', 'README.md', 'requirements.txt',
+                'setup.py', 'tests.py',]
+                }
+    elif type_ == 'single':
+        tree = {f'{project}': ['__init__.py', f'{project}.py', 'helpers.py',],
+                'tests': [f'{project}_tests.py', 'helpers_tests.py',],
+                'root': ['.gitignore', 'LICENSE', 'README.md', 'requirements.txt', 'setup.py',],
+                }
         return tree
-    elif x == 
-        return tree
-    elif x ==xx
-        return tree
+    return tree
 
 
-def create_directories_for_single_package(project):
-    tree = {f'{project}': ['__init__.py', f'{project}.py', 'helpers.py',],
-            'tests': [f'{project}_tests.py', 'helpers_tests.py',],
-            'root': ['.gitignore', 'LICENSE', 'README.md', 'requirements.txt', 'setup.py',],
-            }
+def create_directories(project, tree):
     directories = [key for key in tree.keys()]
     for directory in directories:
         if directory == 'root':
@@ -52,11 +42,7 @@ def create_directories_for_single_package(project):
                 return False
     return True
 
-def create_files_for_single_package(project):
-    tree = {f'{project}': ['__init__.py', f'{project}.py', 'helpers.py',],
-            'tests': [f'{project}_tests.py', 'helpers_tests.py',],
-            'root': ['.gitignore', 'LICENSE', 'README.md', 'requirements.txt', 'setup.py',],
-            }
+def create_files(project, tree):
     for directory, files in tree.items():
         for file_ in files:
             if directory == 'root':
@@ -89,11 +75,11 @@ if __name__ == '__main__':
     print(f'Creating project {args.project}...')
     
     create_project_directory(args.project)
-    if args.type == 'oneoff':
-        create_files(args.project)
-    if args.type == 'single':
-        create_directories_for_single_package(args.project)
-        create_files_for_single_package(args.project)
+
+    tree = create_tree(args.project, args.type)
+    create_directories(args.project, tree)
+    create_files(args.project, tree)
+    print('Done!')
 
 
     
